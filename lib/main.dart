@@ -14,18 +14,7 @@ class MyApp extends StatefulWidget{
 }
 class _MyAppState extends State<MyApp>{
 
-  var _questionIndex =0;
-  void answerQuestion(){
-
-    setState(() {
-      _questionIndex=_questionIndex=1;
-    });
-    print(_questionIndex);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var questions=[
+  final questions =  const [
       {
         'questionText': 'What \'s your favourite color?',
         'answers': ['red','Black','Green','White']
@@ -43,12 +32,34 @@ class _MyAppState extends State<MyApp>{
       },
    
      ];
+
+  var _questionIndex =0;
+  void answerQuestion(){
+
+    setState(() {
+      _questionIndex=_questionIndex+1;
+    });
+    print(_questionIndex);
+    if(_questionIndex<questions.length){
+      print('We have more questions.');
+    }
+    else{
+      print('You do it.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+
+   //  questions =[]; does not work if it is const value
     // TODO: implement build
     return MaterialApp(
       home:Scaffold(
         appBar:AppBar(title:Text('My First App'),
        ),
-        body: Column(
+        body: _questionIndex<questions.length ? 
+        Column(
           children: [
             Question(
                 questions[_questionIndex]['questionText']
@@ -57,7 +68,9 @@ class _MyAppState extends State<MyApp>{
              return Answer(answerQuestion,answer);
            }).toList()
           ],
-        ),
+        ) :  
+        Center(
+          child :Text('You do it.')),
       ),
     );
   }
